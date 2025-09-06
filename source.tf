@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "s3_assume_role" {
 }
 
 resource "aws_iam_role" "s3_replication" {
-  count = data.aws_caller_identity.current.account_id == var.source_account ? 1 : 0
+  count              = data.aws_caller_identity.current.account_id == var.source_account ? 1 : 0
   name               = "s3-replication-configuration"
   assume_role_policy = data.aws_iam_policy_document.s3_assume_role.json
 }
@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "s3_replication" {
       "s3:GetObjectLegalHold",
     ]
 
-    resources = [ "${var.source_bucket_arn}/*" ]
+    resources = ["${var.source_bucket_arn}/*"]
   }
 
   statement {
@@ -48,32 +48,32 @@ data "aws_iam_policy_document" "s3_replication" {
 
     actions = [
       "s3:ReplicateObject",
-      "s3:ObjectOwnerOverrideToBucketOwner",  
+      "s3:ObjectOwnerOverrideToBucketOwner",
       "s3:GetObjectVersionTagging",
       "s3:ReplicateDelete",
       "s3:ReplicateTags",
     ]
 
-    resources = [ "${var.destination_bucket_arn}/*" ]
+    resources = ["${var.destination_bucket_arn}/*"]
   }
 }
 
 resource "aws_iam_policy" "s3_replication" {
-  count = data.aws_caller_identity.current.account_id == var.source_account ? 1 : 0
+  count  = data.aws_caller_identity.current.account_id == var.source_account ? 1 : 0
   name   = "s3-replication"
   policy = data.aws_iam_policy_document.s3_replication.json
 }
 
 resource "aws_iam_role_policy_attachment" "s3_replication" {
-  count = data.aws_caller_identity.current.account_id == var.source_account ? 1 : 0
+  count      = data.aws_caller_identity.current.account_id == var.source_account ? 1 : 0
   role       = aws_iam_role.s3_replication[0].name
   policy_arn = aws_iam_policy.s3_replication[0].arn
 }
 
 resource "aws_s3_bucket_replication_configuration" "s3_replication" {
-  count = data.aws_caller_identity.current.account_id == var.source_account ? 1 : 0
+  count  = data.aws_caller_identity.current.account_id == var.source_account ? 1 : 0
   role   = aws_iam_role.s3_replication[0].arn
-  bucket        = split(":",var.source_bucket_arn)[5]
+  bucket = split(":", var.source_bucket_arn)[5]
 
   rule {
     id = "allfiles"
@@ -84,6 +84,10 @@ resource "aws_s3_bucket_replication_configuration" "s3_replication" {
     filter {}
 
     status = "Enabled"
+
+    access_control_translation {
+      owner = "Destination"
+    }
 
     destination {
       bucket        = var.destination_bucket_arn

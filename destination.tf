@@ -6,11 +6,11 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
     }
 
     actions = [
-        "s3:ReplicateDelete",  
-        "s3:ReplicateObject",  
-        "s3:ObjectOwnerOverrideToBucketOwner",  
-        "s3:GetBucketVersioning",  
-        "s3:PutBucketVersioning" 
+      "s3:ReplicateDelete",
+      "s3:ReplicateObject",
+      "s3:ObjectOwnerOverrideToBucketOwner",
+      "s3:GetBucketVersioning",
+      "s3:PutBucketVersioning"
     ]
 
     resources = [
@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
 }
 
 resource "aws_s3_bucket_policy" "allow_access_from_another_account" {
-  count = data.aws_caller_identity.current.account_id == var.destination_account ? 1 : 0 
-  bucket = split(":",var.destination_bucket_arn)[5]
+  count  = data.aws_caller_identity.current.account_id == var.destination_account ? 1 : 0
+  bucket = split(":", var.destination_bucket_arn)[5]
   policy = data.aws_iam_policy_document.allow_access_from_another_account.json
 }

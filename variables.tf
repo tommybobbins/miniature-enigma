@@ -13,21 +13,21 @@ variable "common_tags" {
 }
 
 variable "source_account" {
-  type = string
+  type    = string
   default = "0123456789"
 }
 
 variable "destination_account" {
-  type = string
+  type    = string
   default = "9876543210"
 }
 
 variable "source_bucket_arn" {
-  type = string
+  type    = string
   default = "arn:aws:s3:::source-bucket"
 }
 
 variable "destination_bucket_arn" {
-  type = string
+  type    = string
   default = "arn:aws:s3:::destination-bucket"
 }
