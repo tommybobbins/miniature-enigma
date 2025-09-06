@@ -97,7 +97,6 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
   statement {
     principals {
       type        = "AWS"
-      # identifiers = ["arn:aws:iam::${var.source_account}:role/service-role/s3-replication-configuration"]
       identifiers = ["arn:aws:iam::${var.source_account}:role/s3-replication-configuration"]
     }
 
