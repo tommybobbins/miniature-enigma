@@ -1,6 +1,7 @@
 # miniature-enigma - Proof of concept for Cross Account S3 Replication
 Quick demo to show cross account S3 replication for all objects
 
+![S3 bucket replication](images/s3_bucket_repl.png)
 
 # Instructions
 
@@ -11,6 +12,7 @@ destination_account = "9876543210"
 source_bucket_arn = "arn:aws:s3:::my-cool-source-bucket-2025-09-06"
 destination_bucket_arn = "arn:aws:s3:::my-cool-destination-bucket-2025-09-06"
 ```
+- Ensure that object versioning is enabled on the source bucket
 - Login to the source Account 0123456789
 - init, plan and apply if you are happy
 ```
