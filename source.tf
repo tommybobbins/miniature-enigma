@@ -85,13 +85,14 @@ resource "aws_s3_bucket_replication_configuration" "s3_replication" {
 
     status = "Enabled"
 
-    access_control_translation {
-      owner = "Destination"
-    }
-
     destination {
       bucket        = var.destination_bucket_arn
       storage_class = "STANDARD"
+
+    #   access_control_translation {
+    #     owner = "Destination"
+    #   }
     }
+
   }
 }
